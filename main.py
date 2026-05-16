@@ -5,7 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
-
+    
 st.set_page_config(layout="wide", initial_sidebar_state="expanded")
 st.markdown("""
     <style>
@@ -76,7 +76,30 @@ with st.sidebar:
     mes_filtro = st.sidebar.multiselect(
     "Selecione o mês", options=df_valor_total["MES"].unique(), default=df_valor_total["MES"].unique()
     )
-    
+    st.subheader("Visual")
+    tipo_fundo = st.radio("Tipo de plano de fundo", ["Cor sólida", "Gradiente"])
+
+    if tipo_fundo == "Cor sólida":
+        cor = st.color_picker("Escolha a cor", "#130101")
+        css_fundo = f"background-color: {cor};"
+    else:
+        col1, col2 = st.columns(2)
+        cor1 = col1.color_picker("Cor inicial", "#0f0c29")
+        cor2 = col2.color_picker("Cor final", "#302b63")
+        direcao = st.slider("Direção do gradiente (graus)", 0, 360, 135)
+        css_fundo = f"background: linear-gradient({direcao}deg, {cor1}, {cor2});"
+
+    st.markdown(f"""
+    <style>
+    html, body, .stApp, 
+    [data-testid="stAppViewContainer"],
+    [data-testid="stMain"],
+    [data-testid="stMainBlockContainer"],
+    section.main > div {{
+        {css_fundo}
+    }}
+    </style>
+""", unsafe_allow_html=True)
     
     
     
